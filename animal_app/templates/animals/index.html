@@ -1,0 +1,9 @@
+{% if latest_animal_list %}
+    <ul>
+    {% for item in latest_animal_list %}
+        <li><a href="/animal/{{ item.id }}/">{{ item.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>Your Zoo is empty :(</p>
+{% endif %}
