@@ -1,9 +1,13 @@
 from django.conf.urls import url
+from rest_framework.urlpatterns import format_suffix_patterns
 from django.urls import path
 
-from animal_app.views import AnimalsView, AnimalDetail
+from animal_app import views
+
 
 urlpatterns = [
-    path('', AnimalsView.as_view(), name='index'),
-    url(r'^(?P<id>[0-9]+)/$', AnimalDetail.as_view(), name='detail'),
+    path('', views.AnimalList.as_view(), name='index'),
+    url(r'^(?P<id>[0-9]+)/$', views.AnimalDetail.as_view(), name='detail'),
 ]
+
+urlpatterns = format_suffix_patterns(urlpatterns)
