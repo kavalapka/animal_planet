@@ -7,7 +7,7 @@ from animal_app import views
 
 urlpatterns = [
     path('', views.AnimalList.as_view(), name='index'),
-    url(r'^(?P<id>[0-9]+)/$', views.AnimalDetail.as_view(), name='detail'),
+    url(r'^(?P<pk>[0-9]+)/$', views.AnimalDetail.as_view(), name='detail'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

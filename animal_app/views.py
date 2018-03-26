@@ -2,25 +2,27 @@ from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework import mixins
+from rest_framework import generics
 from django.views.generic.base import TemplateView
 from animal_app.models import Animal
 from animal_app.serializer import AnimalSerializer
 
 
-class AnimalList(APIView):
-    def get(self, request, format=None):
-        animals = Animal.objects.all()
-        serializer = AnimalSerializer(animals, many=True)
-        return Response(serializer.data)
 
-    def post(self, request, format=None):
-        serializer = AnimalSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class AnimalList(generics.ListCreateAPIView):
+    queryset = Animal.objects.all()
+    serializer_class = AnimalSerializer
+    
 
-class AnimalDetail(APIView):
+
+class AnimalDetail(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = AnimalSerializer
+    queryset = Animal.objects.all()
+
+
+
+'''class AnimalDetail(APIView):
     def get_object(self, id):
         try:
             return Animal.objects.get(id=id)
@@ -44,7 +46,7 @@ class AnimalDetail(APIView):
         animal = self.get_object(id)
         animal.delete()
         return Response(status.HTTP_204_NO_CONTENT)
-
+'''
 
 '''class AnimalsView(TemplateView):
 

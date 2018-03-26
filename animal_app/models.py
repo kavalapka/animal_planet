@@ -6,4 +6,4 @@ class Animal(models.Model):
     number = models.IntegerField(default=0)
 
     def __str__(self):
-        return '[{}] {}'.format(self.id, self.name)
+        return '[{}] {}'.format(self.pk, self.name)
