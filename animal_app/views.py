@@ -4,12 +4,13 @@ from django.views.generic.base import TemplateView
 from animal_app.models import Animal
 from animal_app.serializer import AnimalSerializer, UserSerializer
 from django.contrib.auth.models import User
+from animal_app.permissions import IsOwnerOrReadOnly
 
 
 class AnimalList(generics.ListCreateAPIView):
     queryset = Animal.objects.all()
     serializer_class = AnimalSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
@@ -18,7 +19,7 @@ class AnimalList(generics.ListCreateAPIView):
 class AnimalDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = AnimalSerializer
     queryset = Animal.objects.all()
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
 
 
 class UserList(generics.ListAPIView):
