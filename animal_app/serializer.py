@@ -3,16 +3,18 @@ from animal_app.models import Animal
 from django.contrib.auth.models import User
 
 
-class AnimalSerializer(serializers.ModelSerializer):
+class AnimalSerializer(serializers.HyperlinkedModelSerializer):
+    owner = serializers.ReadOnlyField(source='owner.username')
+
     class Meta:
         model = Animal
-        owner = serializers.ReadOnlyField(source='owner.username')
-        fields = ('pk', 'name', 'number', 'owner')
+        fields = ('url', 'pk', 'name', 'number', 'owner')
 
 
-class UserSerializer(serializers.ModelSerializer):
-    animal = serializers.PrimaryKeyRelatedField(many=True, queryset=Animal.objects.all())
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+    animal = serializers.HyperlinkedRelatedField(many=True,view_name='animal-detail',
+                                                 read_only=True)
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'animal')
+        fields = ('url', 'id', 'username', 'animal')
