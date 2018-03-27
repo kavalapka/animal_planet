@@ -1,4 +1,4 @@
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, viewsets
 from animal_app.models import Animal
 from animal_app.serializer import AnimalSerializer, UserSerializer
 from django.contrib.auth.models import User
@@ -15,7 +15,7 @@ def api_root(request, format=None):
     })
 
 
-class AnimalList(generics.ListCreateAPIView):
+class AnimalViewSet(viewsets.ModelViewSet):
     queryset = Animal.objects.all()
     serializer_class = AnimalSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
@@ -24,17 +24,7 @@ class AnimalList(generics.ListCreateAPIView):
         serializer.save(owner=self.request.user)
 
 
-class AnimalDetail(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = AnimalSerializer
-    queryset = Animal.objects.all()
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
-
-
-class UserList(generics.ListAPIView):
+class UserViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-
-class UserDetail(generics.RetrieveAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
