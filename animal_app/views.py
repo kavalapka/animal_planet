@@ -1,6 +1,4 @@
 from rest_framework import generics, permissions
-from rest_framework import renderers
-from django.views.generic.base import TemplateView
 from animal_app.models import Animal
 from animal_app.serializer import AnimalSerializer, UserSerializer
 from django.contrib.auth.models import User
