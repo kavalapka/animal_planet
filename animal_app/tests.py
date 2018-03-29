@@ -25,6 +25,7 @@ class UsersSeleniumTests(LiveServerTestCase):
 
     @classmethod
     def tearDownClass(cls):
+        cls.selenium.quit()
         super(UsersSeleniumTests, cls).tearDownClass()
 
     def test_login(self):
